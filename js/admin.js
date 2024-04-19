@@ -5,6 +5,7 @@
 
     const getData = (editor) => {
 
+
         let block = document.querySelector( '.lh-1' );
         block.insertAdjacentHTML("beforeend", '<button id="submit" class="btn btn-outline-success saveButton">Сохранить</button>');
 
@@ -39,6 +40,7 @@
     }
 
     const eOpen = (e) => {
+        e.target.classList.add('hide');
         ClassicEditor
         .create( editorBlock, {
             ckfinder:
