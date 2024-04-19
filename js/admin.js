@@ -9,6 +9,7 @@
         block.insertAdjacentHTML("beforeend", '<button id="submit" class="btn btn-outline-success saveButton">Сохранить</button>');
 
         document.querySelector( '#submit' ).addEventListener( 'click', () => {
+
             let editorData = editor.getData();
 
             const url = '/index.php';
@@ -33,7 +34,7 @@
                 window.location.reload(true)
             })
             .catch(error => console.error('Error:', error));
-            //
+
         });
     }
 
