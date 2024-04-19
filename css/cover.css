@@ -1,0 +1,22 @@
+@media (width < 992px){
+  .log-btn{
+    margin: 15px 0 5px 0;
+    float:left;
+  }
+  .close{
+    display: none;
+  }
+  /* .container{
+    margin-top:55px;
+  } */
+  .navbar-brand{
+    display: none;
+  }
+  #navbarsExampleDefault{
+    display: none;
+  }
+}
+
+.saveButton{
+  margin-top:10px;
+}
