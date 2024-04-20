@@ -7,7 +7,7 @@ class Model {
         return true;
     }
 
-    public function createHtml($tag, $attr = array('id'=>'', 'class'=>'', 'href'=>'', 'style'=>''), $content){
+    public function createHtml($tag, $attr = array(), $content){
 
         if(is_array($attr))
             foreach($attr as $key => $val){
@@ -55,12 +55,16 @@ class Model {
     }
 
     public function doUpload($file){
+
         $file_name = $file['upload']['name'];
-        $file_path = 'upload/'.$file_name;
+        $tmp_name = $file['upload']['tmp_name'];
+
+        $file_p = stripslashes("/upload/".$file_name);
         $ext = end(explode('.',$file_name));
-        if(move_uploaded_file($file['upload']['tmp_name'], $file_path) || $_SESSION['auth']){
+
+        if(move_uploaded_file($tmp_name, "$uploads_dir/$file_name") || $_SESSION['auth']){
             $data['file'] = $file_name;
-            $data['url'] = $file_path;
+            $data['url'] = $file_p;
             $data['uploaded'] = 1;
         } else {
             $data['uploaded'] = 0;
@@ -70,8 +74,19 @@ class Model {
         return json_encode($data);
     }
 
-    public function processContent($pText, $content){
-        return str_replace('{{content}}', $content['link'].$this->createHtml('div', array('id'=>'mainContent'), $content['content']), $pText);
+    public function processContent($file, $content){
+        $arr = [
+            'id'=>'mainContent',
+            'data-title'=>$content['title']?$content['title']:'title',
+            'data-meta_d'=>$content['meta_d']?$content['meta_d']:'meta_d',
+            'data-meta_k'=>$content['meta_k']?$content['meta_k']:'meta_k',
+        ];
+
+        $file = str_replace('{{title}}', $content['title'], $file);
+        $file = str_replace('{{meta_d}}', $content['meta_d'], $file);
+        $file = str_replace('{{meta_k}}', $content['meta_k'], $file);
+
+        return str_replace('{{content}}', $content['link'].$this->createHtml('div', $arr, $content['content']), $file);
     }
 
     public function renderTemplate($file, $content){

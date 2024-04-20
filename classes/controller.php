@@ -33,9 +33,12 @@ class Controller extends View{
 
     public function addPage($data, $db){
 
-        $stmt = $db->prepare('INSERT INTO pages (content, url) VALUES (:content, :url)');
+        $stmt = $db->prepare('INSERT INTO pages (title, content, meta_d, meta_k, url) VALUES (:title, :content, :meta_d, :meta_k, :url)');
 
+        $stmt->bindValue(':title', $data->title);
         $stmt->bindValue(':content', $data->content);
+        $stmt->bindValue(':meta_d', $data->meta_d);
+        $stmt->bindValue(':meta_k', $data->meta_k);
 
         $stmt->bindValue(':url', $data->url);
 
@@ -46,7 +49,7 @@ class Controller extends View{
 
     public function updatePage($data, $db){
 
-        $stmt = $this->db->prepare("UPDATE `pages` SET content = '{$data->content}' WHERE `url` LIKE '%{$data->url}';");
+        $stmt = $this->db->prepare("UPDATE `pages` SET title = '{$data->title}', content = '{$data->content}', meta_d = '{$data->meta_d}', meta_k = '{$data->meta_k}' WHERE `url` LIKE '%{$data->url}';");
 
         $result = $stmt->execute();
 

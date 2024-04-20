@@ -20,5 +20,6 @@ function __autoload($class_name)
 __autoload("model");
 __autoload("view");
 __autoload("controller");
-
+// echo "<pre>";
+// print_r($_SERVER);
 $app = new controller();
