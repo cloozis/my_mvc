@@ -38,7 +38,7 @@ class Model {
     }
 
     public function getContent($url){
-        // print_r($url);
+
         $q = "SELECT * FROM `pages` WHERE `url` LIKE '%{$url}'";
 
         $result = $this->db->query($q);
@@ -104,7 +104,7 @@ class Model {
             return $this->getContent($url);
 
         } catch (Exception $e){
-            return 'index.html';
+            return false;
         }
 
     }

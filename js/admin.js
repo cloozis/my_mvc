@@ -41,8 +41,14 @@
 
     const eOpen = (e) => {
         e.target.classList.add('hide');
-        ClassicEditor
+        let editor = ClassicEditor
         .create( editorBlock, {
+
+            // toolbar:
+            // {
+                //name: 'source',
+                //items: ['codeBlock','|','undo', 'redo', '|', 'heading', '|', 'bold', 'italic', '|', 'link', 'uploadImage', 'insertTable', 'blockQuote', 'mediaEmbed', '|', 'bulletedList', 'numberedList', 'outdent', 'indent'],
+            // },
             ckfinder:
             {
                 uploadUrl: '/index.php'
@@ -54,7 +60,7 @@
         .catch( error => {
             console.error( error );
         } );
-
+        console.log(ClassicEditor.prototype);
     }
 
     openEditorLink.addEventListener("click", eOpen);
