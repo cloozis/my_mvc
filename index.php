@@ -4,6 +4,7 @@ define('CLASSES_PATH', './classes/');
 define('TEMP_PATH', './templates/');
 
 
+
 function checkConfig(){
     $file = 'config.php';
 
@@ -13,13 +14,14 @@ function checkConfig(){
 
             $data = $_POST;
             $data['password'] = md5($data['password']);
-// print_r($data);
+
             $content = "<?php\n
 define('DEF_SITE_NAME', '{$data['sitename']}');\n
 define('DEF_LOGIN', '{$data['login']}');\n
 define('DEF_PASS', '{$data['password']}');";
 
             file_put_contents($file, $content);
+            createPagesTable();
             header('Location: /');
 
         }
@@ -31,6 +33,22 @@ define('DEF_PASS', '{$data['password']}');";
 }
 
 checkConfig();
+
+function createPagesTable(){
+    $db = new SQLite3('database.db');
+    $q = 'CREATE TABLE "pages" (
+        "id"	INTEGER,
+        "title"	TEXT,
+        "content"	TEXT,
+        "meta_d"	TEXT,
+        "meta_k"	TEXT,
+        "url"	TEXT,
+        PRIMARY KEY("id")
+    );';
+
+    $db->query($q);
+    $db->close();
+}
 
 function __autoload($class_name)
 {
@@ -47,6 +65,5 @@ function __autoload($class_name)
 __autoload("model");
 __autoload("view");
 __autoload("controller");
-// echo "<pre>";
-// print_r($_SERVER);
+
 $app = new controller();
