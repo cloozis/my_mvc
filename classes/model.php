@@ -119,6 +119,7 @@ class Model {
             'data-meta_k'=>$content['meta_k']?$content['meta_k']:'meta_k',
         ];
 
+        $file = str_replace('{{SITE_LOGO}}', DEF_SITE_NAME, $file);
         $file = str_replace('{{title}}', $content['title'], $file);
         $file = str_replace('{{meta_d}}', $content['meta_d'], $file);
         $file = str_replace('{{meta_k}}', $content['meta_k'], $file);
@@ -141,26 +142,23 @@ class Model {
 
             $url = $this->u_decode($url);
 
-            if($url == '/logout'){
-                unset($_SESSION['auth']);
-                header('Location: /');
-                exit;
-            }
-
             if(!$url && $url == '/'){
                 $url = 'index.html';
             }
 
-
             $url = stripslashes($url);
-
-            //print_r($url);
 
             switch ($url) {
                 case '/search':
                     $search = stripcslashes($_POST['search']);
                     return $this->getSearchContent($search);
                     break;
+
+                case '/logout':
+                    unset($_SESSION['auth']);
+                    header('Location: /');
+                    break;
+
                 default:
                     return $this->getContent($url);
             }

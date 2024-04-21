@@ -2,8 +2,35 @@
 session_start();
 define('CLASSES_PATH', './classes/');
 define('TEMP_PATH', './templates/');
-define('DEF_LOGIN', 'admin');
-define('DEF_PASS', '4297f44b13955235245b2497399d7a93');
+
+
+function checkConfig(){
+    $file = 'config.php';
+
+    if (!file_exists($file)) {
+        $output = file_get_contents(TEMP_PATH.'config.html');
+        if($_POST){
+
+            $data = $_POST;
+            $data['password'] = md5($data['password']);
+// print_r($data);
+            $content = "<?php\n
+define('DEF_SITE_NAME', '{$data['sitename']}');\n
+define('DEF_LOGIN', '{$data['login']}');\n
+define('DEF_PASS', '{$data['password']}');";
+
+            file_put_contents($file, $content);
+            header('Location: /');
+
+        }
+
+        die($output);
+    }
+
+    require_once($file);
+}
+
+checkConfig();
 
 function __autoload($class_name)
 {
