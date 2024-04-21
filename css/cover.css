@@ -23,7 +23,7 @@
 /* Работает в Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgb(255, 255, 255) rgb(18, 132, 61);
+  scrollbar-color: rgb(11, 11, 11) rgb(18, 132, 61);
 }
 
 /* Работает в Chrome, Edge и Safari */

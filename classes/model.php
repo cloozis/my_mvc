@@ -54,6 +54,43 @@ class Model {
         $this->db->close();
     }
 
+    public function getSearchContent($query){
+
+        $q = "SELECT * FROM `pages` WHERE `title` LIKE '%{$query}%'";
+
+        $result = $this->db->query($q);
+
+
+        while($row = $result->fetchArray()){
+            $data[] = [
+                'title'=>$row['title'],
+                'url'=>$row['url']
+            ];
+        }
+
+        $i = 1;
+        if($data){
+            foreach($data as $val){
+
+                $url = $this->createHtml('a',['href'=>$val['url']],$val['title']);
+                // echo $url;
+                $res[] = $this->createHtml('p',[],"{$i}. ".$url);
+
+                $i ++;
+            }
+        } else {
+            $res[] = $this->createHtml('p',[],"Страница не найдена!");
+        }
+
+        $this->db->close();
+
+        $content['title'] = 'Результы поиска';
+
+        $content['content'] = '<h1>Результы поиска:</h1>'.@implode($res);
+
+        return $content;
+    }
+
     public function doUpload($file){
 
         $file_name = $file['upload']['name'];
@@ -114,9 +151,19 @@ class Model {
                 $url = 'index.html';
             }
 
+
             $url = stripslashes($url);
 
-            return $this->getContent($url);
+            //print_r($url);
+
+            switch ($url) {
+                case '/search':
+                    $search = stripcslashes($_POST['search']);
+                    return $this->getSearchContent($search);
+                    break;
+                default:
+                    return $this->getContent($url);
+            }
 
         } catch (Exception $e){
             return false;

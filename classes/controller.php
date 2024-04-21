@@ -6,24 +6,27 @@ class Controller extends View{
 
         $this->db = new SQLite3('database.db');
 
-        try{
-            $data = json_decode(file_get_contents('php://input'));
 
-            if($data->save == 'save_page'){
+            try{
+                $data = json_decode(file_get_contents('php://input'));
 
-                ($this->savePage($data)) ? die(json_encode(['save_page'=>true])) : die(json_encode(['save_page'=>false]));
+                if($data->save == 'save_page'){
+
+                    ($this->savePage($data)) ? die(json_encode(['save_page'=>true])) : die(json_encode(['save_page'=>false]));
+                }
+
+                if($data->auth){
+                    die($this->Login($data->auth));
+                }
+
+            } catch (Exception $e) {
+
             }
 
-            if($data->auth){
-                die($this->Login($data->auth));
+        if($_SESSION['auth']){
+            if(isset($_FILES['upload']['name'])){
+                die(Model::doUpload($_FILES));
             }
-
-        } catch (Exception $e) {
-
-        }
-
-        if(isset($_FILES['upload']['name'])){
-            die(Model::doUpload($_FILES));
         }
 
         $content = Model::checkPage($uri);
