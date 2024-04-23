@@ -6,7 +6,6 @@ class Controller extends View{
 
         $this->db = new SQLite3('database.db');
 
-
             try{
                 $data = json_decode(file_get_contents('php://input'));
 
@@ -42,7 +41,6 @@ class Controller extends View{
         $stmt->bindValue(':content', $data->content);
         $stmt->bindValue(':meta_d', $data->meta_d);
         $stmt->bindValue(':meta_k', $data->meta_k);
-
         $stmt->bindValue(':url', $data->url);
 
         $result = $stmt->execute();
@@ -81,8 +79,6 @@ class Controller extends View{
     public function Login($data){
 
         if(DEF_LOGIN == $data->login && DEF_PASS == md5($data->password)){
-            // $_SESSION['login'];
-            // $_SESSION['password']
             $_SESSION['auth'] = true;
             return json_encode(array("auth"=>True));
         } else {
